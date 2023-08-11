@@ -9,7 +9,7 @@ import (
 	"runtime"
 	"strings"
 
-	_ "github.com/google/go-github/v35/github"
+	_ "github.com/google/go-github/v53/github"
 	"github.com/overvenus/ghstats/cmd"
 	"github.com/sirupsen/logrus"
 	log "github.com/sirupsen/logrus"
