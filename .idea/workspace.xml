@@ -5,12 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7cd7fe5e-eb4a-4701-8327-fe5f32282842" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.github/workflows/workday_test_check" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/ci_test/action.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/ci_test/jenkins.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cmd/cli_test_status.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cfg.toml" beforeDir="false" afterPath="$PROJECT_DIR$/cfg.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/ci_test/action.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/ci_test/action.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/ci_test/jenkins.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/ci_test/jenkins.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/cli_test_status.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/cli_test_status.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
     </list>
@@ -147,40 +146,52 @@
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
   </component>
-  <component name="WfRunsListSearchHistory">{
-  &quot;history&quot;: [
+  <component name="WfRunsListSearchHistory"><![CDATA[{
+  "history": [
     {
-      &quot;branch&quot;: &quot;master&quot;,
-      &quot;currentBranchFilter&quot;: true
+      "branch": "master",
+      "currentBranchFilter": true
     },
     {
-      &quot;branch&quot;: &quot;master&quot;,
-      &quot;currentBranchFilter&quot;: true
+      "branch": "master",
+      "currentBranchFilter": true
     },
     {
-      &quot;branch&quot;: &quot;master&quot;,
-      &quot;currentBranchFilter&quot;: true
+      "branch": "master",
+      "currentBranchFilter": true
     },
     {
-      &quot;branch&quot;: &quot;master&quot;,
-      &quot;currentBranchFilter&quot;: true
+      "branch": "master",
+      "currentBranchFilter": true
     },
     {
-      &quot;branch&quot;: &quot;master&quot;,
-      &quot;currentBranchFilter&quot;: true
+      "branch": "master",
+      "currentBranchFilter": true
     },
     {
-      &quot;branch&quot;: &quot;master&quot;,
-      &quot;currentBranchFilter&quot;: true
+      "branch": "master",
+      "currentBranchFilter": true
     },
     {
-      &quot;branch&quot;: &quot;master&quot;,
-      &quot;currentBranchFilter&quot;: true
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
+    },
+    {
+      "branch": "master",
+      "currentBranchFilter": true
     }
   ],
-  &quot;lastFilter&quot;: {
-    &quot;branch&quot;: &quot;master&quot;,
-    &quot;currentBranchFilter&quot;: true
+  "lastFilter": {
+    "branch": "master",
+    "currentBranchFilter": true
   }
-}</component>
+}]]></component>
 </project>

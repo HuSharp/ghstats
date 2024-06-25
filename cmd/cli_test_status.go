@@ -6,11 +6,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/go-github/v50/github"
+	"github.com/overvenus/ghstats/cmd/ci_test"
 	"github.com/overvenus/ghstats/pkg/config"
 	"github.com/overvenus/ghstats/pkg/feishu"
-
-	"github.com/google/go-github/v32/github"
-	"github.com/overvenus/ghstats/cmd/ci_test"
 	"github.com/spf13/cobra"
 	"golang.org/x/oauth2"
 )
@@ -43,23 +42,27 @@ func newTestCommand() *cobra.Command {
 			// build sha map
 			shaMap := make(map[string]bool)
 			for _, pr := range prLists {
-				shaKey := *getPRLastCommit(githubClient, owner, repo, pr.GetNumber())
-				shaMap[shaKey] = true
+				allCommits := getPRAllCommits(githubClient, owner, repo, pr.GetNumber())
+				for _, commit := range allCommits {
+					shaMap[commit.GetSHA()] = true
+				}
 			}
 
 			// ger failed ci link
 			buf := strings.Builder{}
-			ciLists := getFailedCIURLWithCommits(githubClient, owner, repo, shaMap)
+			_ = getFailedCIURLWithCommits(githubClient, owner, repo, shaMap)
 
 			fmt.Println("======Below is the unstable ut ci link======")
-			for _, ciLink := range ciLists {
-				fmt.Println("ci link: ", ciLink)
-				buf.WriteString(fmt.Sprintf("ci link: %s\n", ciLink))
+			for failedName, stats := range ci_test.TestNameMap {
+				printContent := fmt.Sprintf("%s\n"+
+					"failed count: %d, link: %s\n\n", failedName, stats.FailedCount, stats.CILink)
+				fmt.Println(printContent)
+				buf.WriteString(printContent)
 			}
 
 			bot := feishu.WebhookBot(cfg.FeishuWebhookToken)
 			ctx := context.Background()
-			return bot.SendMarkdownMessage(ctx, "check test status️", buf.String(), feishu.TitleColorWathet)
+			return bot.SendMarkdownMessage(ctx, "Check Test Status️(Daily)", buf.String(), feishu.TitleColorWathet)
 		},
 	}
 
@@ -105,8 +108,8 @@ func getPRBetweenMergedTime(client *github.Client, owner string, repo string) (p
 		for _, pr := range PRs {
 			fmt.Println("PR number: ", pr.GetNumber(), " which is merged at: ", pr.GetMergedAt(), " and updated at: ", pr.GetUpdatedAt())
 			prLists = append(prLists, pr)
-			// get PRs which is updated 7 days ago
-			if pr.GetUpdatedAt().Before(now.AddDate(0, 0, -14)) {
+			// get PRs which is updated 1 days ago
+			if pr.GetUpdatedAt().Before(now.AddDate(0, 0, -1)) {
 				return prLists
 			}
 		}
@@ -121,10 +124,8 @@ func getPRBetweenMergedTime(client *github.Client, owner string, repo string) (p
 
 }
 
-func getPRLastCommit(client *github.Client, owner string, repo string, prNumber int) *string {
+func getPRAllCommits(client *github.Client, owner string, repo string, prNumber int) (allCommits []*github.RepositoryCommit) {
 	opt := &github.ListOptions{PerPage: 100}
-
-	var commit string
 
 	for {
 		commits, resp, err := client.PullRequests.ListCommits(context.Background(), owner, repo, prNumber, opt)
@@ -133,15 +134,14 @@ func getPRLastCommit(client *github.Client, owner string, repo string, prNumber 
 			return nil
 		}
 
-		commit = commits[len(commits)-1].GetSHA()
-
+		allCommits = append(allCommits, commits...)
 		if resp.NextPage == 0 {
 			break
 		}
 
 		opt.Page = resp.NextPage
 	}
-	return &commit
+	return
 }
 
 func getFailedCIURLWithCommits(client *github.Client, owner string, repo string,
@@ -150,8 +150,8 @@ func getFailedCIURLWithCommits(client *github.Client, owner string, repo string,
 	for _, check := range checkType {
 		switch check {
 		case "jenkins":
-			fmt.Println("get jenkins failed ci link")
-			ciLists = append(ciLists, ci_test.GetJenkinsFailed(commitsMap)...)
+			// fmt.Println("get jenkins failed ci link")
+			// ciLists = append(ciLists, ci_test.GetJenkinsFailed(commitsMap)...)
 		case "action":
 			fmt.Println("get action failed ci link")
 			ciLists = append(ciLists, ci_test.GetActionFailed(client, owner, repo, commitsMap)...)

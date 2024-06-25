@@ -84,7 +84,6 @@ func GetJenkinsFailed(commitsMap map[string]bool) (ciLists []string) {
 			log.Fatalf("Failed to unmarshal build job response: %v", jsonErr)
 		}
 
-		// 只需要失败的ut link
 		if jobInfo.Result != "FAILURE" {
 			continue
 		}
@@ -98,7 +97,6 @@ func GetJenkinsFailed(commitsMap map[string]bool) (ciLists []string) {
 		}
 		jobCommit := jobSpec.Refs.Pull[0].Commit
 
-		// 判断 jobCommit 是否在 commits 中
 		if _, ok := (commitsMap)[jobCommit]; ok {
 			ciLists = append(ciLists, fmt.Sprintf(jenkinsURL+"%d"+"/consoleFull", build.Number))
 		}
