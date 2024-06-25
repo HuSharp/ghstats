@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/go-github/v53/github"
+	"github.com/google/go-github/v50/github"
 	"github.com/overvenus/ghstats/pkg/config"
 	"github.com/overvenus/ghstats/pkg/debug"
 	"github.com/overvenus/ghstats/pkg/feishu"
@@ -136,20 +136,18 @@ func reviewRange(cmd *cobra.Command, kind string, start, end time.Time) error {
 		// updated:2021-05-23T21:00:00+08:00..2021-05-24T21:00:00+08:00
 		currentRFC3339 := current.Format(time.RFC3339)
 		nextRFC3339 := next.Format(time.RFC3339)
-		updateRange := fmt.Sprintf(" updated:%s..%s", currentRFC3339, nextRFC3339)
+		updateRange := fmt.Sprintf("updated:%s..%s", currentRFC3339, nextRFC3339)
 		fmt.Printf("[%s] %s -%s\n", time.Now().Format(time.RFC3339), kind, updateRange)
 		projects := make(map[string][]*github.IssuesSearchResult)
 		for _, proj := range cfg.Repos {
 			for _, query := range proj.PRQuery {
-				for _, label := range []string{"issue", "pull-request"} {
-					query = fmt.Sprintf("%s %s is:%s", strings.TrimSpace(query), updateRange, label)
-					log.Info("query: ", query)
-					results, err := gh.SearchIssues(ctx, client, query)
-					if err != nil {
-						return err
-					}
-					projects[proj.Name] = append(projects[proj.Name], results...)
+				query = fmt.Sprintf("%s %s is:pull-request", strings.TrimSpace(query), updateRange)
+				log.Info("query: ", query)
+				results, err := gh.SearchIssues(ctx, client, query)
+				if err != nil {
+					return err
 				}
+				projects[proj.Name] = append(projects[proj.Name], results...)
 			}
 		}
 		log.Debug("projects issues: ", debug.PrettyFormat(projects))

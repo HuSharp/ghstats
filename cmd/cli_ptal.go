@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/google/go-github/v53/github"
+	"github.com/google/go-github/v50/github"
 	"github.com/overvenus/ghstats/pkg/config"
 	"github.com/overvenus/ghstats/pkg/feishu"
 	"github.com/overvenus/ghstats/pkg/gh"
@@ -43,22 +43,18 @@ func newPTALCommand() *cobra.Command {
 			projects := make(map[string][]*github.IssuesSearchResult)
 			for _, proj := range cfg.Repos {
 				for _, query := range proj.PRQuery {
-					for _, label := range []string{"issue", "pull-request"} {
-						query = fmt.Sprintf("%s is:%s", query, label)
-						results, err := gh.SearchIssues(ctx, client, query)
-						if err != nil {
-							return err
-						}
-						projects[proj.Name] = append(projects[proj.Name], results...)
+					results, err := gh.SearchIssues(ctx, client, fmt.Sprintf("repo:%s is:pull-request", strings.TrimSpace(query)))
+					if err != nil {
+						return err
 					}
-
+					projects[proj.Name] = append(projects[proj.Name], results...)
 				}
 			}
 			buf := strings.Builder{}
-			// To keep message short, we only keep the most recent 5 PRs.
-			max := 5
-			count := 0
+			// To keep message short, we only keep the most recent 10 PRs.
+			max := 10
 			for repo, results := range projects {
+				count := 0
 				prs := strings.Builder{}
 				for _, res := range results {
 					for _, issue := range res.Issues {
@@ -77,8 +73,8 @@ func newPTALCommand() *cobra.Command {
 							markdown.Link(fmt.Sprintf("#%d", *issue.Number), *issue.HTMLURL),
 							markdown.Escape(*issue.Title),
 						))
+						count++
 					}
-					count++
 				}
 				if prs.Len() != 0 {
 					buf.WriteString(fmt.Sprintf("## %s\n", markdown.Escape(repo)))
