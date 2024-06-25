@@ -96,17 +96,42 @@ func getCheckLog(logsURL, ciLink string) {
 			printContent = append(printContent, line)
 			continue
 		}
-		
-		if printContent != nil {
+
+		if len(printContent) != 0 {
 			printContent = append(printContent, line)
 			if strings.Contains(line, "FAIL") {
 				break
 			}
 		}
+	}
 
+	if len(printContent) == 0 {
+		for i, line := range lines {
+			if strings.Contains(line, "goleak") {
+				testName := "goleak"
+				if _, ok := TestNameMap[testName]; !ok {
+					TestNameMap[testName] = &testStats{
+						Name:        testName,
+						FailedCount: 1,
+						CILink:      []string{ciLink},
+					}
+				} else {
+					TestNameMap[testName].CILink = append(TestNameMap[testName].CILink, ciLink)
+					TestNameMap[testName].FailedCount++
+				}
+				fmt.Println("goleak found: ", logsURL)
+				printContent = append(printContent, line)
+				for j := i + 1; j < len(lines); j++ {
+					if !strings.Contains(lines[j], "make: ***") {
+						printContent = append(printContent, lines[j])
+					}
+				}
+				break
+			}
+
+		}
 	}
 
 	fmt.Println("======Below is the failed test content======")
-	// fmt.Println("logURL: ", logsURL)
 	fmt.Println(strings.Join(printContent, "\n"))
 }
