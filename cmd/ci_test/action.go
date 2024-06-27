@@ -68,10 +68,22 @@ func getCheckLog(logsURL, ciLink string) {
 	var printContent []string
 	lines := strings.Split(string(body), "\n")
 	for i, line := range lines {
-		// format is `2024-06-21T02:53:34.8525620Z --- FAIL: TestHTTPClientTestSuiteWithServiceDiscovery (22.02s)`
+		// format is `2024-06-20T03:58:04.8182577Z --- FAIL: TestTSOKeyspaceGroupManager (56.79s)`
 		if strings.Contains(line, "FAIL: Test") {
-			// if next line contains `FAIL: Test`, then skip this line
-			if strings.Contains(lines[i+1], "FAIL: Test") {
+			//
+			/*
+				when found `Suite`, then skip this line.
+				The suite format is like:
+				- `--- FAIL: TestTSOKeyspaceGroupManager/TestKeyspaceGroupMergeIntoDefault`
+				or
+				- `--- FAIL: TestRuleTestSuite (34.05s)
+				    testutil.go:319: start test TestBatch in pd mode
+					...
+					testutil.go:349: start test TestLeaderAndVoter in api mode
+				   	--- FAIL: TestRuleTestSuite/TestLeaderAndVoter (20.35s)`
+
+			*/
+			if strings.Contains(lines[i+1], "Test") || strings.Contains(lines[i+1], "/") {
 				continue
 			}
 			// check if the test name is valid

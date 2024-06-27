@@ -5,8 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7cd7fe5e-eb4a-4701-8327-fe5f32282842" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.github/workflows/workday_review.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/workday_review.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.github/workflows/workday_test_check" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cfg.toml" beforeDir="false" afterPath="$PROJECT_DIR$/cfg.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/ci_test/action.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/ci_test/action.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/cli_test_status.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/cli_test_status.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,18 +148,6 @@
   </component>
   <component name="WfRunsListSearchHistory"><![CDATA[{
   "history": [
-    {
-      "branch": "master",
-      "currentBranchFilter": true
-    },
-    {
-      "branch": "master",
-      "currentBranchFilter": true
-    },
-    {
-      "branch": "master",
-      "currentBranchFilter": true
-    },
     {
       "branch": "master",
       "currentBranchFilter": true
