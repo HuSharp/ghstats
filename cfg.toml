@@ -1,29 +1,17 @@
 [review]
 allow-users = [
-  "nolouch",
-  "rleungx",
-  "disksing",
-  "JmPotato",
-  "lhy1024",
-  "AndreMouche",
-  "bufferflies",
-  "CabinfeverB",
   "HuSharp",
-  "Connor1996",
-  "matchge-ca",
-  "glorv",
-  "niubell",
-  "okJiang",
+  "ywqzzy",
+  "hongyunyan",
+  "Lloyd-Pottiger",
+  "xzhangxian1008",
+  "Qiaolin-Yu",
+  "xhebox",
 ]
 block-comments = [
   "/run-",
   "/merge",
   "/rebuild",
-  "/ok-to-test",
-  "/test",
-  "/retest",
-  "/hold",
-  "/unhold",
 ]
 block-labels = [
   "cherry-pick-approved",
@@ -52,7 +40,7 @@ feishu-webhook-token = ""
 github-token = ""
 
 [[review.repos]]
-name = "PD"
+name = "NewBee"
 pr-query = [
   """
 repo:tikv/pd
@@ -68,5 +56,14 @@ repo:pingcap/tidb
 """,
   """
 repo:pingcap/kvproto
+""",
+  """
+repo:pingcap/tiflash
+""",
+  """
+repo:pingcap/docs-cn
+""",
+  """
+repo:pingcap/docs
 """,
 ]

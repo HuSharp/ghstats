@@ -13,9 +13,9 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-go@v2
         with:
-          go-version: "1.17.2"
+          go-version: "1.21.0"
       - run: |
-          make run-daily-review
+          make run-daily-check-test
         env:
           GHSTATS_GITHUB_TOKEN: ${{ secrets.GHSTATS_GITHUB_TOKEN }}
           GHSTATS_FEISHU_WEBHOOK_TOKEN: ${{ secrets.GHSTATS_FEISHU_WEBHOOK_TOKEN }}

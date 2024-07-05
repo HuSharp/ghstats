@@ -30,3 +30,10 @@ run-weekly-review: build
 
 run-monthly-review: build
 	./bin/gh -c cfg.toml review monthly
+
+run-daily-check-test: build
+	./bin/gh -c cfg.toml test
+
+run-weekly-check-test: build
+	./bin/gh -c cfg.toml test weekly
+
