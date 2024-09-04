@@ -51,6 +51,8 @@ func newTestCommand() *cobra.Command {
 	return command
 }
 
+var skipPRNumber = []int{}
+
 func checkTestRange(cmd *cobra.Command, kind string, lastDay time.Time) error {
 	cfgPath, err := cmd.Flags().GetString("config")
 	if err != nil {
@@ -79,15 +81,26 @@ func checkTestRange(cmd *cobra.Command, kind string, lastDay time.Time) error {
 	buf := strings.Builder{}
 	_ = getFailedCIURLWithCommits(githubClient, owner, repo, shaMap)
 
+	skipPRMap := make(map[int]bool)
+	for _, prNumber := range skipPRNumber {
+		skipPRMap[prNumber] = true
+	}
+
 	fmt.Println("======Below is the unstable ut ci link======")
 	for failedName, stats := range ci_test.TestNameMap {
+		skipPR := false
 		printContent := fmt.Sprintf("%s failed count: %d", failedName, stats.FailedCount)
 		for ciLink, prNumber := range stats.CILink {
+			if exist, ok := skipPRMap[prNumber]; ok && exist {
+				skipPR = true
+			}
 			printContent = fmt.Sprintf("%s\nPR number: %d, CI link: %s", printContent, prNumber, ciLink)
 		}
 		printContent = fmt.Sprintf("%s\n\n", printContent)
-		fmt.Print(printContent)
-		buf.WriteString(printContent)
+		if !skipPR {
+			fmt.Print(printContent)
+			buf.WriteString(printContent)
+		}
 	}
 
 	now := time.Now().In(timeZone)
